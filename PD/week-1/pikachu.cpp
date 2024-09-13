@@ -2,6 +2,7 @@
 using namespace std;
 int main()
 {
+    system("color 70"); // white background
     cout << "  `;-.         ___,         " << endl;
     cout << "    `.`\\_...._/`.-\"`          " << endl;
     cout << "      \\        /," << endl;

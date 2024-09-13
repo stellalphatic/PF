@@ -2,6 +2,7 @@
 using namespace std;
 int main()
 {
+    system("color 03"); // aqua color
     cout << "+--^---------,--------,-----,--------^-,   " << endl;
     cout << " | ||||||||   '--------'     |          O  " << endl;
     cout << " '+--------------------------^----------|  " << endl;
