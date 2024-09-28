@@ -67,10 +67,12 @@ void compareMarks(string nameStd1, int ecatMarksStd1, string nameStd2, int ecatM
 {
     if (ecatMarksStd1 > ecatMarksStd2)
     {
-        cout << "******" << nameStd1 << "\'s marks are Maximum******" << endl;
+        cout << nameStd1 << "\'s Roll no. is 1" << endl
+             << nameStd2 << "\'s Roll no. is 2" << endl;
     }
     else
     {
-        cout << "******" << nameStd2 << "\'s marks are Maximum*******" << endl;
+        cout << nameStd2 << "\'s Roll no. is 1" << endl
+             << nameStd1 << "\'s Roll no. is 2" << endl;
     }
 }
