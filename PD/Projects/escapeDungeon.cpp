@@ -24,15 +24,18 @@ void gotoxy(int x, int y)
     coordinates.Y = y;
     SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coordinates);
 }
-char getCharAtPosition(int x, int y)
+char getCharAtxy(short int x, short int y)
+
 {
-    char ch;
-    COORD coord;
-    coord.X = x;
-    coord.Y = y;
-    DWORD num_read;
-    ReadConsoleOutputCharacter(GetStdHandle(STD_OUTPUT_HANDLE), &ch, 1, coord, &num_read);
-    return ch;
+
+    CHAR_INFO ci;
+    COORD xy = {0, 0};
+    SMALL_RECT rect = {x, y, x, y};
+    COORD coordBufSize;
+    coordBufSize.X = 1;
+    coordBufSize.Y = 1;
+    return ReadConsoleOutput(GetStdHandle(STD_OUTPUT_HANDLE), &ci, coordBufSize, xy, &rect) ? ci.Char.AsciiChar
+                                                                                            : ' ';
 }
 void startGame()
 {
@@ -61,7 +64,7 @@ void erasePlayer()
 }
 void movePlayerLeft()
 {
-    char leftChar = getCharAtPosition(playerX - 1, playerY);
+    char leftChar = getCharAtxy(playerX - 1, playerY);
     if (leftChar == '?')
     {
         erasePlayer();
@@ -91,7 +94,7 @@ void movePlayerLeft()
 }
 void movePlayerRight()
 {
-    char rightChar = getCharAtPosition(playerX + 1, playerY);
+    char rightChar = getCharAtxy(playerX + 1, playerY);
     if (rightChar == '?')
     {
         erasePlayer();
@@ -112,7 +115,7 @@ void movePlayerRight()
 }
 void movePlayerUp()
 {
-    char upChar = getCharAtPosition(playerX, playerY - 1);
+    char upChar = getCharAtxy(playerX, playerY - 1);
     if (upChar == '$')
     {
         erasePlayer();
@@ -127,7 +130,7 @@ void movePlayerUp()
 }
 void movePlayerdown()
 {
-    char downChar = getCharAtPosition(playerX, playerY + 1);
+    char downChar = getCharAtxy(playerX, playerY + 1);
     if (downChar == '?')
     {
         erasePlayer();
@@ -150,7 +153,7 @@ void shootUp()
 {
     for (int i = 1; i <= 4; i++)
     {
-        char ch = getCharAtPosition(playerX, playerY - i);
+        char ch = getCharAtxy(playerX, playerY - i);
         if (ch == ' ')
         {
             gotoxy(playerX, playerY - i);
@@ -168,7 +171,7 @@ void shootDown()
 {
     for (int i = 1; i <= 4; i++)
     {
-        char ch = getCharAtPosition(playerX, playerY + i);
+        char ch = getCharAtxy(playerX, playerY + i);
         if (ch == ' ')
         {
             gotoxy(playerX, playerY + i);
@@ -186,7 +189,7 @@ void shootLeft()
 {
     for (int i = 1; i <= 4; i++)
     {
-        char ch = getCharAtPosition(playerX - i, playerY);
+        char ch = getCharAtxy(playerX - i, playerY);
         if (ch == ' ')
         {
             gotoxy(playerX - i, playerY);
@@ -214,7 +217,7 @@ void shootRight()
 {
     for (int i = 1; i <= 4; i++)
     {
-        char ch = getCharAtPosition(playerX + i, playerY);
+        char ch = getCharAtxy(playerX + i, playerY);
         if (ch == ' ')
         {
             gotoxy(playerX + i, playerY);
@@ -325,7 +328,7 @@ void eraseBullet()
 }
 void enemy3Shoot()
 {
-    // char ch = getCharAtPosition(enemy3X, enemy3Y);
+    // char ch = getCharAtxy(enemy3X, enemy3Y);
     // if (ch == 'P')
     //     playerHealth -= 10;
     eraseBullet();
