@@ -46,7 +46,13 @@ void home()
     if (opt == 2)
     {
         system("cls");
-        cout << "This option will soon be available when I'll get permission to link database ;)" << endl;
+        cout << "Enter the new username: ";
+        cin >> newUser;
+        cout << "Enter the new password: ";
+        cin >> newUserPass;
+        cout << "Enter the initial balance: ";
+        cin >> newUserBalance;
+        cout << "Account created successfully!" << endl;
         home();
     }
 }
