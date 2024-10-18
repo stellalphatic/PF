@@ -1,9 +1,10 @@
 #include <iostream>
 using namespace std;
-void upperTriangle(int number){
-for (int i = number; i > 0; i--)
+void upperTriangle(int rows)
+{
+    for (int i = rows; i > 0; i--)
     {
-        for (int j = 0; j < number; j++)
+        for (int j = 0; j < rows; j++)
         {
             if (j < i)
                 cout << " ";
@@ -13,10 +14,11 @@ for (int i = number; i > 0; i--)
         cout << endl;
     }
 }
-void lowerTriangle(int number){
-     for (int i = 0; i < number; i++)
+void lowerTriangle(int rows)
+{
+    for (int i = 0; i < rows; i++)
     {
-        for (int j = 0; j < number; j++)
+        for (int j = 0; j < rows; j++)
         {
             if (j < i)
                 cout << " ";
@@ -28,9 +30,9 @@ void lowerTriangle(int number){
 }
 int main()
 {
-    int number = 10;
-    upperTriangle(number);
-    lowerTriangle(number);
-   
+    int rows = 10;
+    upperTriangle(rows);
+    lowerTriangle(rows);
+
     return 0;
 }

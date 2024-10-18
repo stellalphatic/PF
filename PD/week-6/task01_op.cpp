@@ -2,8 +2,8 @@
 using namespace std;
 int main()
 {
-    int n = 10;
-    for (int i = n; i > 0; i--)
+    int rows = 10;
+    for (int i = rows; i > 0; i--)
     {
         for (int j = i; j > 0; j--)
         {
