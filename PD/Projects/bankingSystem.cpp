@@ -1,39 +1,40 @@
 #include <iostream>
+#include <conio.h>
 #include <cmath>
 using namespace std;
 string admin = "admin";
 string adminPass = "admin123";
 
-string user1Name = "ahmad";
-string user1Pass = "pass123";
-int user1Balance = 50000;
-
-string user2Name = "amir";
-string user2Pass = "pass123";
-int user2Balance = 20000;
-
-string newUser = "";
-string newUserPass = "";
-int newUserBalance = 0;
+const int maxUsers = 5;
+string userNames[maxUsers] = {"ahmad", "amir", "", "", ""};
+string passwords[maxUsers] = {"pass123", "pass123"};
+float userBalance[maxUsers] = {5000, 10000};
+string emails[maxUsers] = {"ahmad832@gmail.com", "ahmad832@gmail.com"};
 
 string user;
 string password;
-int balance;
+float balance = 0;
 int amount;
 int opt;
 
+void header()
+{
+    cout << "+-----------------------------------------------------------------------------+     " << endl;
+    cout << "|  ####     #    ####   #  #  #     ####  #   #   ###   #####  ####  ##   ##   |    " << endl;
+    cout << "|  #   #   #  #   ####  #  # #     #   #   # #   #   #    #    #     # # # #   |     " << endl;
+    cout << "|  ####   ######  ##  # #  ##        #      #     #       #    ####  #  #  #   |   " << endl;
+    cout << "|  #   #  #    #  ##   ##  # #   #    #     #   #   #     #    #     #     #   |   " << endl;
+    cout << "|  ####   #    #  ##    #  #  #   ####      #    ###      #    ####  #     #   |    " << endl;
+    cout << "|-----------------------------------------------------------------------------+     " << endl
+         << endl;
+}
 void home()
 {
-    cout << "_____________________________________________________________________________     " << endl;
-    cout << "|####     #    ####   #  #  #    ####  #   #   ###   #####  ####  ##   ##   *    " << endl;
-    cout << "|#   #   #  #   ####  #  # #    #   #   # #   #   #    #    #     # # # #   *     " << endl;
-    cout << "|####   ######  ##  # #  ##       #      #     #       #    ####  #  #  #   *   " << endl;
-    cout << "|#   #  #    #  ##   ##  # #   #   #     #   #   #     #    #     #     #   *   " << endl;
-    cout << "|####   #    #  ##    #  #  #   ####     #    ###      #    ####  #     #   *    " << endl;
-    cout << "*****************************************************************************     " << endl
-         << endl;
-    cout << "1. Login" << endl;
-    cout << "2. New user?Please Signup here" << endl;
+    header();
+    cout << "+--------------------------------------+" << endl;
+    cout << "|    1. Login                          |" << endl;
+    cout << "|    2. New user?Please Signup here    |" << endl;
+    cout << "+--------------------------------------+" << endl;
     cin >> opt;
     if (opt == 1)
     {
@@ -43,18 +44,26 @@ void home()
         cout << "Password : ";
         cin >> password;
     }
-    if (opt == 2)
+    else if (opt == 2)
     {
         system("cls");
+        int index = 2;
+        while (userNames[index] != "")
+        {
+            index++;
+        }
         cout << "Enter the new username: ";
-        cin >> newUser;
+        cin >> userNames[index];
         cout << "Enter the new password: ";
-        cin >> newUserPass;
-        cout << "Enter the initial balance: ";
-        cin >> newUserBalance;
+        cin >> passwords[index];
+        cout << "Enter email: ";
+        cin >> emails[index];
+        system("cls");
         cout << "Account created successfully!" << endl;
         home();
     }
+    else
+        cout << "Invalid Choice" << endl;
 }
 void menu()
 {
@@ -187,49 +196,30 @@ void transaction()
     else if (opt == 2)
     {
         cout << "Whom do you want to Send?" << endl;
-        cout << "1. " << user1Name << endl;
-        cout << "2. " << user2Name << endl;
-        if (newUser != "")
-            cout << "3. " << newUser << endl;
-        cin >> opt;
-        cout << "How much you want to send? $";
+        for (int i = 0; i < 5; i++)
+        {
+            if (userNames[i] != user && userNames[i] != "")
+                cout << i << ". " << userNames[i] << endl;
+        }
+
         cin >> amount;
-        if (opt == 1)
+        if (opt < 2)
         {
             if (amount < balance)
             {
-                user1Balance += amount;
+                userBalance[opt] += amount;
                 balance -= amount;
-                cout << "Successfully transfered $" << amount << " to " << user1Name << endl;
+                cout << "Successfully transfered $" << amount << " to " << userNames[opt] << endl;
             }
             else
                 cout << "Payment Unsuccessful ;(";
         }
-        else if (opt == 2)
-        {
-            if (amount < balance)
-            {
-                user2Balance += amount;
-                balance -= amount;
-                cout << "Successfully transfered $" << amount << " to " << user2Name << endl;
-            }
-            else
-                cout << "Payment Unsuccessful ;(";
-        }
-        else if (opt == 3 && newUser != "")
-        {
-            if (amount < balance)
-            {
-                newUserBalance += amount;
-                balance -= amount;
-                cout << "Successfully transfered $" << amount << " to " << newUser << endl;
-            }
-            else
-                cout << "Payment Unsuccessful ;(";
-        }
+
         else
-            cout << "Invalid CHoice";
+            cout << "Invalid CHoice" << endl;
     }
+    else
+        cout << "Invalid CHoice" << endl;
 }
 void addMoney()
 {
@@ -283,105 +273,105 @@ void billPayment()
         else
             cout << "Payment Unsuccessful ;(" << endl;
     }
+    else
+        cout << "Invalid Choice" << endl;
 }
 void createAccount()
 {
+    int index = 2;
+    while (userNames[index] != "")
+    {
+        index++;
+    }
     cout << "Enter the new username: ";
-    cin >> newUser;
+    cin >> userNames[index];
     cout << "Enter the new password: ";
-    cin >> newUserPass;
-    cout << "Enter the initial balance: ";
-    cin >> newUserBalance;
+    cin >> passwords[index];
+    cout << "Enter email: ";
+    cin >> emails[index];
+    cout << "Enter initial balance: ";
+    cin >> userBalance[index];
     cout << "Account created successfully!" << endl;
 }
 void updateAccount()
 {
     cout << "Select User Account:" << endl;
-    if (user1Name != "")
-        cout << "Press 1. for " << user1Name << endl;
-    if (user2Name != "")
-        cout << "Press 2. for " << user2Name << endl;
-    if (newUser != "")
-        cout << "Press 3. for " << newUser << endl;
+    for (int i = 0; i < maxUsers; i++)
+    {
+        if (userNames[i] != "")
+            cout << "Press " << i << ". for " << userNames[i] << endl;
+    }
+
     cin >> opt;
-    if (opt == 1)
+    if (opt < maxUsers)
     {
-        cout << "Enter new password for " << user1Name << endl;
-        cin >> user1Pass;
-        cout << "Enter new balance for " << user1Name << endl;
-        cin >> user1Balance;
-        cout << "Account updated successfully!" << endl;
+        int option;
+        cout << "Press 1. to set new password for " << userNames[opt] << endl;
+        cout << "Press 2. to update balance of " << userNames[opt] << endl;
+        cin >> option;
+        if (option == 1)
+        {
+            cin >> passwords[opt];
+            cout << "Account updated successfully!" << endl;
+        }
+        else if (option == 2)
+        {
+            cin >> userBalance[opt];
+            cout << "Account updated successfully!" << endl;
+        }
+        else
+            cout << "Invalid Choice" << endl;
     }
-    if (opt == 2)
-    {
-        cout << "Enter new password for " << user2Name << endl;
-        cin >> user2Pass;
-        cout << "Enter new balance for " << user2Name << endl;
-        cin >> user2Balance;
-        cout << "Account updated successfully!" << endl;
-    }
-    if (opt == 3)
-    {
-        cout << "Enter new password for " << newUser << endl;
-        cin >> newUserPass;
-        cout << "Enter new balance for " << newUser << endl;
-        cin >> newUserBalance;
-        cout << "Account updated successfully!" << endl;
-    }
+    else
+        cout << "Invalid Choice" << endl;
 }
 void deleteAccount()
 {
     cout << "Which user Account you Want to Delete?" << endl;
-    if (user1Name != "")
-        cout << "Press 1. to delete, " << user1Name << endl;
-    if (user2Name != "")
-        cout << "Press 2. to delete, " << user2Name << endl;
+    for (int i = 0; i < maxUsers; i++)
+    {
+        if (userNames[i] != "")
+            cout << "Press " << i << ". to delete, " << userNames[i] << endl;
+    }
+
     cin >> opt;
-    if (opt == 1)
+    if (opt < maxUsers)
     {
-        cout << user1Name << " deleted successfully" << endl;
-        user1Name = "";
-        user1Balance = 0;
-        user1Pass = "";
+        cout << userNames[opt] << " deleted successfully" << endl;
+        userNames[opt] = "";
+        userBalance[opt] = 0;
+        passwords[opt] = "";
     }
-    else if (opt == 2)
-    {
-        cout << user2Name << " deleted successfully" << endl;
-        user2Name = "";
-        user2Balance = 0;
-        user2Pass = "";
-    }
+
     else
         cout << "Invalid CHoice!" << endl;
 }
 void readAcccounts()
 {
     cout << "Accounts List:" << endl;
-    if (user1Name != "")
-        cout << "User: " << user1Name << endl;
-    cout << "Pass: " << user1Pass << endl;
-    cout << "Balance: " << user1Balance << endl
-         << endl;
-    if (user2Name != "")
-        cout << "User: " << user2Name << endl;
-    cout << "Pass: " << user2Pass << endl;
-    cout << "Balance: " << user2Balance << endl
-         << endl;
-    if (newUser != "")
-        cout << "User: " << newUser << endl;
-    cout << "Pass: " << newUserPass << endl;
-    cout << "Balance: " << newUserBalance << endl
-         << endl;
+    for (int i = 0; i < maxUsers; i++)
+    {
+        if (userNames[i] != "")
+        {
+            cout << "User: " << userNames[i] << endl;
+            cout << "Pass: " << passwords[i] << endl;
+            cout << "Email: " << emails[i] << endl;
+            cout << "Balance: " << userBalance[i] << endl
+                 << endl;
+        }
+    }
 }
 void adminMenu()
 {
-    cout << "ADMIN Panel:" << endl;
-    cout << "Press 1. to Create Account" << endl;
-    cout << "Press 2. to Update Account" << endl;
-    cout << "Press 3. to Delete Account" << endl;
-    cout << "Press 4. to Read Accounts" << endl;
-    cout << "Press 5. to Logout" << endl;
-    cout << "Press 6. to exit " << endl;
+    cout << "+----------------------------+" << endl;
+    cout << "| ADMIN Panel:               |" << endl;
+    cout << "| Press 1. to Create Account |" << endl;
+    cout << "| Press 2. to Update Account |" << endl;
+    cout << "| Press 3. to Delete Account |" << endl;
+    cout << "| Press 4. to Read Accounts  |" << endl;
+    cout << "| Press 5. to Logout         |" << endl;
+    cout << "| Press 6. to exit           |" << endl;
+    cout << "+----------------------------+" << endl;
 }
 
 int main()
@@ -389,6 +379,14 @@ int main()
 hell:
     system("CLS");
     home();
+    for (int i = 0; i < maxUsers; i++)
+    {
+        if (user == userNames[i] && password == passwords[i])
+        {
+            balance = userBalance[i];
+            break;
+        }
+    }
     if (user == admin && password == adminPass)
     {
         cout << "Welcome, ADMIN ! You have SUDO Powers" << endl;
@@ -412,14 +410,10 @@ hell:
                 cout << "Invalid choice!" << endl;
         }
     }
-    else if ((user == user1Name && password == user1Pass) || (user == user2Name && password == user2Pass) || (user == newUser && password == newUserPass))
+
+    else if (balance != 0)
     {
-        if (user == user1Name)
-            balance = user1Balance;
-        else if (user == user2Name)
-            balance = user2Balance;
-        else if (user == newUserPass)
-            balance = newUserBalance;
+
         cout << "Welcome, " << user << "!" << endl;
         while (true)
         {
