@@ -1,7 +1,10 @@
 #include <iostream>
 #include <conio.h>
 #include <cmath>
+#include <string>
 using namespace std;
+bool isValidNumber(string);
+bool validateEmail(string);
 string admin = "admin";
 string adminPass = "admin123";
 
@@ -15,7 +18,7 @@ string user;
 string password;
 float balance = 0;
 int amount;
-int opt;
+char opt;
 
 void header()
 {
@@ -30,13 +33,14 @@ void header()
 }
 void home()
 {
+again:
     header();
     cout << "+--------------------------------------+" << endl;
     cout << "|    1. Login                          |" << endl;
     cout << "|    2. New user?Please Signup here    |" << endl;
     cout << "+--------------------------------------+" << endl;
     cin >> opt;
-    if (opt == 1)
+    if (opt == '1')
     {
         cout << "Please Login to your account" << endl;
         cout << "username : ";
@@ -44,7 +48,7 @@ void home()
         cout << "Password : ";
         cin >> password;
     }
-    else if (opt == 2)
+    else if (opt == '2')
     {
         system("cls");
         int index = 2;
@@ -52,18 +56,31 @@ void home()
         {
             index++;
         }
+        string enteredEmail;
         cout << "Enter the new username: ";
         cin >> userNames[index];
         cout << "Enter the new password: ";
         cin >> passwords[index];
+    emailagain:
         cout << "Enter email: ";
-        cin >> emails[index];
+        cin >> enteredEmail;
+        if (validateEmail(enteredEmail))
+            emails[index] = enteredEmail;
+        else
+        {
+            cout << "Please Enter a valid Email" << endl;
+            goto emailagain;
+        }
         system("cls");
         cout << "Account created successfully!" << endl;
         home();
     }
     else
+    {
+        system("cls");
         cout << "Invalid Choice" << endl;
+        goto again;
+    }
 }
 void menu()
 {
@@ -93,7 +110,7 @@ void buyOnline()
     cin >> opt;
 
     char ch;
-    if (opt == 1)
+    if (opt == '1')
     {
         cout << "Bags's price is 20$,Do you want to proceed(y/n)?";
         cin >> ch;
@@ -106,7 +123,7 @@ void buyOnline()
         else
             cout << "Payment unsuccessful ;(" << endl;
     }
-    else if (opt == 2)
+    else if (opt == '2')
     {
         cout << "The price of Shoes is $" << shoes << " ,Do you want to proceed(y/n)?";
         cin >> ch;
@@ -119,7 +136,7 @@ void buyOnline()
         else
             cout << "Payment unsuccessful ;(" << endl;
     }
-    else if (opt == 3)
+    else if (opt == '3')
     {
         cout << "The price of Shirt is $" << shirt << " ,Do you want to proceed(y/n)?";
         cin >> ch;
@@ -132,7 +149,7 @@ void buyOnline()
         else
             cout << "Payment unsuccessful ;(" << endl;
     }
-    else if (opt == 4)
+    else if (opt == '4')
     {
         cout << "The price of iphone15 is $" << iphone << " ,Do you want to proceed(y/n)?";
         cin >> ch;
@@ -145,7 +162,7 @@ void buyOnline()
         else
             cout << "Payment unsuccessful ;(" << endl;
     }
-    else if (opt == 5)
+    else if (opt == '5')
     {
         cout << "The price of Kit is $" << kit << " ,Do you want to proceed(y/n)?";
         cin >> ch;
@@ -158,7 +175,7 @@ void buyOnline()
         else
             cout << "Payment unsuccessful ;(" << endl;
     }
-    else if (opt == 6)
+    else if (opt == '6')
     {
         cout << "The price of medicine is $" << kit << " ,Do you want to proceed(y/n)?";
         cin >> ch;
@@ -179,7 +196,7 @@ void transaction()
     cout << "Press 1 to Withdraw" << endl;
     cout << "Press 2 to Send money" << endl;
     cin >> opt;
-    if (opt == 1)
+    if (opt == '1')
     {
         cout << "How much you want to Withdraw? $";
         cin >> amount;
@@ -193,17 +210,17 @@ void transaction()
             cout << "Your balance is $" << balance << endl;
         }
     }
-    else if (opt == 2)
+    else if (opt == '2')
     {
         cout << "Whom do you want to Send?" << endl;
-        for (int i = 0; i < 5; i++)
+        for (int i = 0; i < maxUsers; i++)
         {
             if (userNames[i] != user && userNames[i] != "")
                 cout << i << ". " << userNames[i] << endl;
         }
 
         cin >> amount;
-        if (opt < 2)
+        if (opt < '2')
         {
             if (amount < balance)
             {
@@ -241,7 +258,7 @@ void billPayment()
     cout << "Press 2 for Gas " << endl;
     cin >> opt;
     char ch;
-    if (opt == 1)
+    if (opt == '1')
     {
         int bill;
         cout << "What's your Electricity bill? $";
@@ -257,7 +274,7 @@ void billPayment()
         else
             cout << "Payment unsuccessful ;(" << endl;
     }
-    else if (opt == 2)
+    else if (opt == '2')
     {
         int bill;
         cout << "What's your Gas Bill? $";
@@ -276,9 +293,38 @@ void billPayment()
     else
         cout << "Invalid Choice" << endl;
 }
+bool validateEmail(string email)
+{
+    bool hasAtSign = false;
+    bool hasDotCom = false;
+    for (int i = 0; i < email.length(); i++)
+    {
+        if (email[i] == '@')
+        {
+            hasAtSign = true;
+            break;
+        }
+    }
+    if (email.substr(email.length() - 4) == ".com")
+        hasDotCom = true;
+    if (hasDotCom && hasAtSign)
+        return true;
+    return false;
+}
+bool isValidNumber(string number)
+{
+    for (int i = 0; i < number.length(); i++)
+    {
+        if (!(number[i] - '0' <= 9))
+            return false;
+    }
+    return true;
+}
 void createAccount()
 {
-    int index = 2;
+    int index = 0;
+    string enteredEmail;
+    string enteredBalance;
     while (userNames[index] != "")
     {
         index++;
@@ -287,12 +333,29 @@ void createAccount()
     cin >> userNames[index];
     cout << "Enter the new password: ";
     cin >> passwords[index];
+emailAgain:
     cout << "Enter email: ";
-    cin >> emails[index];
+    cin >> enteredEmail;
+    if (validateEmail(enteredEmail))
+        emails[index] = enteredEmail;
+    else
+    {
+        cout << "Enter a valid email." << endl;
+        goto emailAgain;
+    }
+balanceAgain:
     cout << "Enter initial balance: ";
-    cin >> userBalance[index];
+    cin >> enteredBalance;
+    if (isValidNumber(enteredBalance))
+        userBalance[index] = stof(enteredBalance);
+    else
+    {
+        cout << "Enter Valid Balance." << endl;
+        goto balanceAgain;
+    }
     cout << "Account created successfully!" << endl;
 }
+
 void updateAccount()
 {
     cout << "Select User Account:" << endl;
@@ -303,18 +366,18 @@ void updateAccount()
     }
 
     cin >> opt;
-    if (opt < maxUsers)
+    if ((opt - '0') < maxUsers)
     {
-        int option;
+        char option;
         cout << "Press 1. to set new password for " << userNames[opt] << endl;
         cout << "Press 2. to update balance of " << userNames[opt] << endl;
         cin >> option;
-        if (option == 1)
+        if (option == '1')
         {
-            cin >> passwords[opt];
+            cin >> passwords[(opt - '0')];
             cout << "Account updated successfully!" << endl;
         }
-        else if (option == 2)
+        else if (option == '2')
         {
             cin >> userBalance[opt];
             cout << "Account updated successfully!" << endl;
@@ -335,7 +398,7 @@ void deleteAccount()
     }
 
     cin >> opt;
-    if (opt < maxUsers)
+    if ((opt - '0') < maxUsers && (opt - '0') >= 0)
     {
         cout << userNames[opt] << " deleted successfully" << endl;
         userNames[opt] = "";
@@ -377,7 +440,8 @@ void adminMenu()
 int main()
 {
 hell:
-    system("CLS");
+    system("cls");
+a:
     home();
     for (int i = 0; i < maxUsers; i++)
     {
@@ -394,17 +458,17 @@ hell:
         {
             adminMenu();
             cin >> opt;
-            if (opt == 1)
+            if (opt == '1')
                 createAccount();
-            else if (opt == 2)
+            else if (opt == '2')
                 updateAccount();
-            else if (opt == 3)
+            else if (opt == '3')
                 deleteAccount();
-            else if (opt == 4)
+            else if (opt == '4')
                 readAcccounts();
-            else if (opt == 5)
+            else if (opt == '5')
                 goto hell;
-            else if (opt == 6)
+            else if (opt == '6')
                 return 0;
             else
                 cout << "Invalid choice!" << endl;
@@ -418,21 +482,21 @@ hell:
         while (true)
         {
             menu();
-            int option;
+            char option;
             cin >> option;
-            if (option == 1)
+            if (option == '1')
                 transaction();
-            else if (option == 2)
+            else if (option == '2')
                 addMoney();
-            else if (option == 3)
+            else if (option == '3')
                 checkBalance();
-            else if (option == 4)
+            else if (option == '4')
                 billPayment();
-            else if (option == 5)
+            else if (option == '5')
                 buyOnline();
-            else if (option == 6)
+            else if (option == '6')
                 goto hell;
-            else if (option == 7)
+            else if (option == '7')
                 break;
             else
                 cout << "Invalid choice" << endl;
@@ -440,7 +504,11 @@ hell:
     }
 
     else
+    {
+        system("cls");
         cout << "Invalid username or password" << endl;
+        goto a;
+    }
 
     return 0;
 }
